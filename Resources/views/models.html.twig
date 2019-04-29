@@ -1,0 +1,37 @@
+{% for model in models %}
+# {{ model.model }}
+
+* NAMESPACE : {{ model.classMetaData.name }}
+
+#### Configuration
+
+* Table Name : {{ model.classMetaData.table.name }}
+* Repository Class : {{ model.classMetaData.customRepositoryClassName }}
+* Identifier : {% for identifier in model.classMetaData.identifier %}{{ identifier }}{% endfor %}
+* Read Only : {{ model.classMetaData.isReadOnly ? 'True' : 'False' }}
+
+#### Fields
+
+There are {{ model.classMetaData.fieldMappings|length }} properties on this Model:
+
+| Field | Column | Type  | Length | Nullable | Unique |
+|--------|-------|--------|--------|--------|--------|
+{% for field in model.classMetaData.fieldMappings %}
+|{% if field.fieldName is defined %}{{ field.fieldName }}{% else %}-{% endif %}|{% if field.columnName is defined %}{{ field.columnName }}{% else %}-{% endif %}|{% if field.type is defined %}{{ field.type }}{% else %}-{% endif %}|{% if field.length is defined %}{{ field.length }}{% else %}-{% endif %}|{% if field.nullable is defined %}{{ field.nullable ? 'True' : 'False' }}{% else %}-{% endif %}|{% if field.unique is defined %}{{ field.unique ? 'True' : 'False' }}{% else %}-{% endif %}|
+{% endfor %}
+
+{% if model.classMetaData.entityListeners|length %}
+#### Entity Listeners
+{% endif %}
+
+{% if model.classMetaData.associationMappings|length %}
+#### Relations :
+
+```mermaid
+graph LR
+{% for name, association in model.classMetaData.associationMappings %}
+A({{ model.model }}) -- {{ association.fieldName }} --> {{ alphas[loop.index + 1] }}({{ association.targetEntity }})
+{% endfor %}
+```
+{% endif %}
+{% endfor %}

@@ -1,0 +1,5 @@
+| Name | Description | Usages |Helps|
+|------|-------------|---------|----|
+{% for command in commands %}
+|{{ command.name }}|{{ command.description }}|{% for usage in command.usages %}{{ usage }}{% endfor %}|{{ command.help }}|
+{% endfor %}

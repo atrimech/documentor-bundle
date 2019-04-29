@@ -1,0 +1,24 @@
+{
+    "name": "mtrimech/documentor-bundle",
+    "description": "The MTrimechDocumentorBundle adds a single task that parse all registered bundles.",
+    "type": "composer-plugin",
+    "require": {
+        "symfony/finder": "^4.2",
+        "symfony/filesystem": "^4.2",
+        "symfony/console": "^4.2",
+        "symfony/routing": "^4.2",
+        "twig/twig": "^2.9"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "MTrimech\\DocumentorBundle\\": "MTrimech/DocumentorBundle/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Trimech Mehdi",
+            "email": "mtrimech@mobelite.fr"
+        }
+    ]
+}

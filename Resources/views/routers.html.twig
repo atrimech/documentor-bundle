@@ -1,0 +1,31 @@
+# {{ bundle.name }}
+
+* NAMESPACE : {{ bundle.namespace }}
+
+### Routing Workflow
+
+{% for routeName, route in routers %}
+{% if routeName|length %}
+{{ loop.index }}. {{ routeName }}
+```mermaid
+graph LR
+A({{ route.path }}) -- {{ route.methods }} --> B(({{ route.controller|last }}))
+B -- Action --> C{ {{ route.action }} }
+C -- Model --> M[ Model ]
+M -- Repository --> R[ Repository ]
+R -- Query --> SQL[ SQL ]
+SQL -- Result --> M[ Model ]
+C -- Response --> Z[ View ]
+{% if route.exception.exist %}
+C -- Exception --> E{ {{ route.exception.line }} }
+{% endif %}
+```
+{% endif %}
+{% endfor %}
+
+{% if undefined|length %}
+**IMPORTANT** : Declared Routers but not function defined ! Must Be deleted :
+{% for action, controller in undefined %}
+{{ loop.index }}. Action named {{ action }} not exist in controller {{ controller }}.
+{% endfor %}
+{% endif %}
