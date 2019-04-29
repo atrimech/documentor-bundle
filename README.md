@@ -27,6 +27,13 @@ app/Kernel.php
 
     $bundles[] = new MTrimech\DocumentorBundle\MTrimechDocumentorBundle();
     
+## Screenshots
+
+![Routers](https://github.com/mtrimech/documentor-bundle/tree/master/Resources/public/routers.png)
+
+
+![Models](https://github.com/mtrimech/documentor-bundle/tree/master/Resources/public/models.png)
+
 ## Usage
 
     bin/console mtrimech:documentor:generator
