@@ -29,10 +29,10 @@ app/Kernel.php
     
 ## Screenshots
 
-![Routers](https://github.com/mtrimech/documentor-bundle/tree/master/Resources/public/img/routers.png)
+![Routers](/mtrimech/documentor-bundle/blob/master/Resources/public/img/routers.png?raw=true)
 
 
-![Models](https://github.com/mtrimech/documentor-bundle/tree/master/Resources/public/img/models.png)
+![Models](/mtrimech/documentor-bundle/blob/master/Resources/public/img/models.png?raw=true)
 
 ## Usage
 
