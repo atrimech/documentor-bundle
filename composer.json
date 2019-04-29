@@ -15,6 +15,7 @@
             "MTrimech\\DocumentorBundle\\": "MTrimech/DocumentorBundle/"
         }
     },
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Trimech Mehdi",
