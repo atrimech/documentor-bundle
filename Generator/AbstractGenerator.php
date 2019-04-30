@@ -154,17 +154,18 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @param $fileName
-     * @param $view
+     * @param BundleInterface $bundle
+     * @param string $directory
+     * @param string $view
      * @param array $parameters
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    protected function writeFile($directory, $view, array $parameters = [])
+    protected function writeFile(BundleInterface $bundle, $directory, $view, array $parameters = [])
     {
         $dirs = explode('/', $directory);
-        if (!$this->style->confirm(sprintf('Generating docs for %s. Do you confirm?', $dirs[count($dirs) - 1]), true)) {
+        if (!$this->style->confirm(sprintf('Generating docs for %s. Do you confirm?', $bundle->getNamespace() . $dirs[count($dirs) - 1]), true)) {
             return;
         }
 
