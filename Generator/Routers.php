@@ -100,7 +100,7 @@ class Routers extends AbstractGenerator implements GeneratorInterface
                     continue;
                 }
 
-                $this->writeFile($this->createDir($bundle, 'Routers'), '@MTrimechDocumentor/routers.html.twig', [
+                $this->writeFile($bundle, $this->createDir($bundle, 'Routers'), '@MTrimechDocumentor/routers.html.twig', [
                     'routers' => $routers[$bundle->getNamespace()],
                     'undefined' => $undefined[$bundle->getNamespace()],
                     'bundle' => $bundle,

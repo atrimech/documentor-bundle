@@ -73,7 +73,7 @@ class Commands extends AbstractGenerator implements GeneratorInterface
             }
 
             if (count($commands)) {
-                $this->writeFile($this->createDir($bundle, 'Command'), '@MTrimechDocumentor/commands.html.twig', [
+                $this->writeFile($bundle, $this->createDir($bundle, 'Command'), '@MTrimechDocumentor/commands.html.twig', [
                     'commands' => $commands,
                     'bundle' => $bundle
                 ]);

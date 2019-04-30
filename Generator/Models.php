@@ -84,7 +84,7 @@ class Models extends AbstractGenerator implements GeneratorInterface
             }
 
             if (count($models)) {
-                $this->writeFile($this->createDir($bundle, 'Models'), '@MTrimechDocumentor/models.html.twig', [
+                $this->writeFile($bundle, $this->createDir($bundle, 'Models'), '@MTrimechDocumentor/models.html.twig', [
                     'models' => $models,
                     'alphas' => $this->alphas,
                 ]);
