@@ -1,19 +1,17 @@
 <?php
 /**
  * This file is part of Documentor.
- * Created by Mobelite
+ * Created by MTrimech
  * Date: 4/29/19
  * Time: 11:43 AM
- * @author: Mobelite Labs <contact@mobelite.fr>
+ * @author: Mahdi Trimech Labs <trimechmehdi11@gmail.com>
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 namespace MTrimech\DocumentorBundle\Generator;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -23,24 +21,6 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  */
 class Commands extends AbstractGenerator implements GeneratorInterface
 {
-    /** @var array $bundles */
-    private $bundles = [];
-
-    /** @var EntityManager $entityManager */
-    private $entityManager;
-
-    /**
-     * Models constructor.
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        parent::__construct($container);
-
-        $this->entityManager = $container->get('doctrine')->getManager();
-        $this->bundles = $container->get('kernel')->getBundles();
-    }
-
     /**
      * @return mixed|void
      * @throws \ReflectionException
@@ -71,7 +51,7 @@ class Commands extends AbstractGenerator implements GeneratorInterface
 
                 if ($this->container) {
                     $commandIds = $this->container->hasParameter('console.command.ids') ? $this->container->getParameter('console.command.ids') : array();
-                    $alias = 'console.command.'.strtolower(str_replace('\\', '_', $class));
+                    $alias = 'console.command.' . strtolower(str_replace('\\', '_', $class));
                     if (isset($commandIds[$alias]) || $this->container->has($alias)) {
                         continue;
                     }
@@ -93,11 +73,10 @@ class Commands extends AbstractGenerator implements GeneratorInterface
             }
 
             if (count($commands)) {
-                $target = $this->createDir($bundle, 'Command');
-                file_put_contents($target . '/README.md', $this->twig->render('@MTrimechDocumentor/commands.html.twig', [
+                $this->writeFile($this->createDir($bundle, 'Command'), '@MTrimechDocumentor/commands.html.twig', [
                     'commands' => $commands,
                     'bundle' => $bundle
-                ]));
+                ]);
             }
 
         }

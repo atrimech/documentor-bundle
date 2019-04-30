@@ -1,16 +1,17 @@
 <?php
 /**
  * This file is part of Documentor.
- * Created by Mobelite
+ * Created by MTrimech
  * Date: 4/29/19
  * Time: 11:43 AM
- * @author: Mobelite Labs <contact@mobelite.fr>
+ * @author: Mahdi Trimech Labs <trimechmehdi11@gmail.com>
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 namespace MTrimech\DocumentorBundle\Generator;
 
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Routing\Route;
@@ -22,22 +23,18 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class Routers extends AbstractGenerator implements GeneratorInterface
 {
-    /** @var array $bundles */
-    private $bundles = [];
-
     /** @var RouterInterface $router */
     private $router;
 
     /**
      * Routers constructor.
      * @param ContainerInterface $container
+     * @param SymfonyStyle $style
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, SymfonyStyle $style)
     {
-        parent::__construct($container);
-
+        parent::__construct($container, $style);
         $this->router = $container->get('router');
-        $this->bundles = $container->get('kernel')->getBundles();
     }
 
     /**
@@ -103,15 +100,11 @@ class Routers extends AbstractGenerator implements GeneratorInterface
                     continue;
                 }
 
-                $target = $this->createDir($bundle, 'Routers');
-
-                $target .= '/README.md';
-
-                file_put_contents($target, $this->twig->render('@MTrimechDocumentor/routers.html.twig', [
+                $this->writeFile($this->createDir($bundle, 'Routers'), '@MTrimechDocumentor/routers.html.twig', [
                     'routers' => $routers[$bundle->getNamespace()],
                     'undefined' => $undefined[$bundle->getNamespace()],
                     'bundle' => $bundle,
-                ]));
+                ]);
             }
         }
     }

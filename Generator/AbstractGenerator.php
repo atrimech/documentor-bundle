@@ -1,10 +1,10 @@
 <?php
 /**
  * This file is part of Documentor.
- * Created by Mobelite
+ * Created by MTrimech
  * Date: 4/29/19
  * Time: 11:47 AM
- * @author: Mobelite Labs <contact@mobelite.fr>
+ * @author: Mahdi Trimech Labs <trimechmehdi11@gmail.com>
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -12,6 +12,8 @@
 namespace MTrimech\DocumentorBundle\Generator;
 
 
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -48,18 +50,26 @@ abstract class AbstractGenerator implements GeneratorInterface
     /** @var array $alphas */
     protected $alphas = [];
 
+    /** @var array $bundles */
+    protected $bundles = [];
+    /** @var SymfonyStyle $style */
+    protected $style;
+
     /**
      * AbstractGenerator constructor.
      * @param ContainerInterface $container
+     * @param SymfonyStyle $style
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, SymfonyStyle $style)
     {
+        $this->bundles = $container->get('kernel')->getBundles();
         $this->fileSystem = new Filesystem();
         $this->finder = new Finder();
         $this->container = $container;
 
         $this->alphas = range('A', 'Z');
         $this->twig = $container->get('twig');
+        $this->style = $style;
     }
 
     /**
@@ -141,5 +151,49 @@ abstract class AbstractGenerator implements GeneratorInterface
     protected function checkBundleInstalled($bundles, $bundle)
     {
         return array_key_exists($bundle, $bundles);
+    }
+
+    /**
+     * @param $fileName
+     * @param $view
+     * @param array $parameters
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    protected function writeFile($directory, $view, array $parameters = [])
+    {
+        $dirs = explode('/', $directory);
+        if (!$this->style->confirm(sprintf('Generating docs for %s. Do you confirm?', $dirs[count($dirs) - 1]), true)) {
+            return;
+        }
+
+        $fileName = $this->checkDestinationFile($directory);
+        file_put_contents($fileName, $this->twig->render($view, $parameters));
+    }
+
+    /**
+     * @param $directory
+     * @return array|bool|mixed|null|string
+     */
+    private function checkDestinationFile($directory)
+    {
+        $fileName = $directory . '/README.md';
+
+        if ($this->fileSystem->exists($fileName)) {
+            $answer = $directory . '/' . $this->style->askQuestion(new Question('The output file README.md already exist. Please enter another name', 'README.md'));
+
+            if (!strpos($answer, '.md')) {
+                $answer .= '.md';
+            }
+
+            if ($this->fileSystem->exists($answer)) {
+                return $this->checkDestinationFile($directory);
+            }
+
+            return $answer;
+        }
+
+        return $fileName;
     }
 }

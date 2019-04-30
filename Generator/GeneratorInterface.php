@@ -1,10 +1,10 @@
 <?php
 /**
  * This file is part of Documentor.
- * Created by Mobelite
+ * Created by MTrimech
  * Date: 4/29/19
  * Time: 11:45 AM
- * @author: Mobelite Labs <contact@mobelite.fr>
+ * @author: Mahdi Trimech Labs <trimechmehdi11@gmail.com>
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */

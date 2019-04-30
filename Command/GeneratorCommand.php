@@ -9,6 +9,7 @@ use MTrimech\DocumentorBundle\Generator\Routers;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Class GeneratorCommand
@@ -33,11 +34,6 @@ class GeneratorCommand extends ContainerAwareCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
-     * @throws \Doctrine\Common\Annotations\AnnotationException
-     * @throws \ReflectionException
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -49,9 +45,11 @@ class GeneratorCommand extends ContainerAwareCommand
 
         $container = $this->getContainer();
 
+        $style = new SymfonyStyle($input, $output);
+
         /** @var AbstractGenerator $generator */
         foreach ($generators as $generator) {
-            (new $generator($container))->generate();
+            (new $generator($container, $style))->generate();
         }
     }
 }
